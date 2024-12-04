@@ -86,7 +86,8 @@
         </section>
         <section class="admin-section">
             <h2>Admin Reply</h2>
-            <input id="admin-question-id" type="text" placeholder="Enter question ID to reply to">
+            <input id="admin-password" type="password" placeholder="Enter Admin Password" />
+            <input id="admin-question-id" type="text" placeholder="Enter question ID to reply to" />
             <textarea id="admin-reply" placeholder="Type your reply here..."></textarea>
             <button onclick="submitReply()">Submit Reply</button>
         </section>
@@ -96,6 +97,7 @@
     </footer>
     <script>
         let questionCounter = 0; // Counter to assign unique IDs to questions
+        const adminPassword = 'admin123'; // Admin password (Change to your desired password)
 
         function submitQuestion() {
             const questionInput = document.getElementById('question-input');
@@ -123,17 +125,25 @@
         }
 
         function submitReply() {
+            const enteredPassword = document.getElementById('admin-password').value.trim();
             const questionId = document.getElementById('admin-question-id').value.trim();
             const adminReply = document.getElementById('admin-reply').value.trim();
             const questionElement = document.getElementById(questionId);
+
+            // Check if the entered password is correct
+            if (enteredPassword !== adminPassword) {
+                alert('Incorrect admin password.');
+                return;
+            }
 
             if (questionId && adminReply) {
                 if (questionElement) {
                     const replyParagraph = questionElement.querySelector('em');
                     if (replyParagraph) {
                         replyParagraph.innerHTML = `<strong>Reply:</strong> ${adminReply}`;
-                        document.getElementById('admin-question-id').value = ''; // Clear input
-                        document.getElementById('admin-reply').value = ''; // Clear input
+                        document.getElementById('admin-password').value = ''; // Clear password input
+                        document.getElementById('admin-question-id').value = ''; // Clear question ID input
+                        document.getElementById('admin-reply').value = ''; // Clear reply input
                     } else {
                         alert('This question already has a reply.');
                     }
