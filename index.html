@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Advice Column</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        header {
+            background-color: #0078D7;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        header h1 {
+            margin: 0;
+        }
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .question-section, .admin-section {
+            margin-bottom: 20px;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #0078D7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #005bb5;
+        }
+        .responses {
+            background: #fff;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .response-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        footer {
+            text-align: center;
+            background: #f1f1f1;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>School Advice Column</h1>
+        <p>Ask questions and get guidance!</p>
+    </header>
+    <main>
+        <section class="question-section">
+            <h2>Ask Your Question</h2>
+            <textarea id="question-input" placeholder="Type your question here..."></textarea>
+            <button onclick="submitQuestion()">Submit</button>
+        </section>
+        <section class="responses" id="responses">
+            <h2>Responses</h2>
+            <p>No questions submitted yet!</p>
+        </section>
+        <section class="admin-section">
+            <h2>Admin Reply</h2>
+            <input id="admin-question-id" type="text" placeholder="Enter question ID to reply to">
+            <textarea id="admin-reply" placeholder="Type your reply here..."></textarea>
+            <button onclick="submitReply()">Submit Reply</button>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 School Advice Column</p>
+    </footer>
+    <script>
+        let questionCounter = 0; // Counter to assign unique IDs to questions
+
+        function submitQuestion() {
+            const questionInput = document.getElementById('question-input');
+            const question = questionInput.value.trim();
+            const responsesSection = document.getElementById('responses');
+
+            if (question) {
+                if (responsesSection.querySelector('p') && responsesSection.querySelector('p').textContent === 'No questions submitted yet!') {
+                    responsesSection.querySelector('p').remove(); // Remove placeholder text
+                }
+
+                questionCounter++;
+                const questionItem = document.createElement('div');
+                questionItem.classList.add('response-item');
+                questionItem.id = `question-${questionCounter}`;
+                questionItem.innerHTML = `
+                    <p><strong>Q${questionCounter}:</strong> ${question}</p>
+                    <p><em>Awaiting reply...</em></p>
+                `;
+                responsesSection.appendChild(questionItem);
+                questionInput.value = ''; // Clear the input
+            } else {
+                alert('Please enter a question.');
+            }
+        }
+
+        function submitReply() {
+            const questionId = document.getElementById('admin-question-id').value.trim();
+            const adminReply = document.getElementById('admin-reply').value.trim();
+            const questionElement = document.getElementById(questionId);
+
+            if (questionId && adminReply) {
+                if (questionElement) {
+                    const replyParagraph = questionElement.querySelector('em');
+                    if (replyParagraph) {
+                        replyParagraph.innerHTML = `<strong>Reply:</strong> ${adminReply}`;
+                        document.getElementById('admin-question-id').value = ''; // Clear input
+                        document.getElementById('admin-reply').value = ''; // Clear input
+                    } else {
+                        alert('This question already has a reply.');
+                    }
+                } else {
+                    alert('Invalid question ID.');
+                }
+            } else {
+                alert('Please fill out both fields.');
+            }
+        }
+    </script>
+</body>
+</html>
